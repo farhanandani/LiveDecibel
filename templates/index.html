@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Decibel Meter</title>
+    <script>
+        function checkDecibel() {
+            fetch('/get_db_level')
+            .then(response => response.json())
+            .then(data => {
+                const dbLevel = data.db_level;
+                document.getElementById('db-value').innerText = dbLevel.toFixed(2);
+
+                // Show popup if db level exceeds 20
+                if (dbLevel > 20) {
+                    document.getElementById('popup').style.display = 'block';
+                } else {
+                    document.getElementById('popup').style.display = 'none';
+                }
+            });
+        }
+
+        // Check decibel every 200 milliseconds for near real-time responsiveness
+        setInterval(checkDecibel, 10);
+    </script>
+    <style>
+        body {
+            background-color: navy;
+            font-family: Arial, Helvetica, sans-serif;
+            color: #e3e3e3;
+        }
+        #popup {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            padding: 20px;
+            background-color: red;
+            color: white;
+            font-size: 20px;
+            border-radius: 5px;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <h1>Decibel Meter</h1>
+    <p>Current dB Level: <span id="db-value">0</span></p>
+
+    <div id="popup">
+        <p style="font-size: 30px">Terdeteksi Suara di Sekitar Anda!</p>
+        <p>Silahkan cari tempat yang lebih tenang</p>
+    </div>
+</body>
+</html>
